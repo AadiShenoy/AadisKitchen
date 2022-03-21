@@ -15,11 +15,7 @@ export default function CustomImage({ imgSrc, pt }) {
         onLoad={onLoad}
         style={{ display: load ? "block" : "none" }}
       />
-      {!load && (
-        <CircularProgress
-          className="img loader"
-        />
-      )}
+      {!load && <CircularProgress className="img loader" />}
     </div>
   );
 }
