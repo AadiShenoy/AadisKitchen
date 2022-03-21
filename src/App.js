@@ -11,8 +11,9 @@ function App() {
   const [recipe, setRecipe] = useState([]);
 
   const fetchitem = async () => {
+    const ms = Date.now();
     const data = await fetch(
-      "https://aadishenoy.github.io/Food-JSON/dataFile.json"
+      "https://aadishenoy.github.io/Food-JSON/dataFile.json?dummy=" + ms
     );
     const jdata = await data.json();
     setRecipe(jdata);

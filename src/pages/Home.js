@@ -1,14 +1,12 @@
 import HeroSection from "../components/HeroSection";
-import QouteSection from "../components/QuoteSection";
 import ChiefsSection from "../components/ChiefsSection";
-
-
-export default function Home(){
-    return (
-        <div>
-            <HeroSection />
-            <QouteSection />
-            <ChiefsSection />
-        </div>
-    )
+import Slider from '../components/Slider'
+export default function Home() {
+  return (
+    <div>
+      <HeroSection />
+      <Slider/>
+      <ChiefsSection />
+    </div>
+  );
 }

@@ -51,7 +51,7 @@ img {
 }
 
 .custom-image {
-  background-color: white;
+  background-color: var(--background-color);
   height: 0;
   width: 100%;
   position: relative;
@@ -62,12 +62,24 @@ img {
     width: 100%;
     height: 100%;
   }
-  .loader{
+  .loader {
     margin-top: 30%;
     margin-left: 40%;
-    color: gray
-
+    color: gray;
   }
+}
+
+.alice-carousel__prev-btn {
+  display: none !important;
+}
+.alice-carousel__next-btn {
+  display: none !important;
+}
+.sliderimg {
+  width: 100%;
+  height: 280px;
+  border-radius: 5px;
+  object-fit: cover
 }
 
 @import "partials/navbar.scss";
@@ -211,6 +223,11 @@ img {
   .d-block h2 {
     font-size: 1.35em;
     color: var(--text-color);
+  }
+  .section.quote {
+    .qoute-text {
+      padding-left: 0;
+    }
   }
 }
 @media screen and (max-width: 480px) {
