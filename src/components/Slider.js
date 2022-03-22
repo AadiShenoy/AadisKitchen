@@ -6,9 +6,9 @@ export default function Slider({ recipe }) {
   return (
     <div className="section hero">
       <div className="col">
-        <AliceCarousel autoPlay autoPlayInterval="1500">
+        <AliceCarousel autoPlay autoPlayInterval="2000">
           {recipe.map((item) => {
-            return <CustomImage  imgSrc={item.image} pt="70%"/>
+            return <CustomImage imgSrc={item.image} pt="70%" />;
           })}
         </AliceCarousel>
       </div>
