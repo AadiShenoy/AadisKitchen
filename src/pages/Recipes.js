@@ -19,12 +19,11 @@ export default function Recipes() {
   const filteredRecipe = useSelector((state) => state.category.filteredRecipe);
   const dispatch = useDispatch();
   const [searchString, setSearchString] = useState("");
-  const [vegRecipeState, setVegRecipeState] = useState(
+  const vegRecipeState = 
     useSelector((state) => state.category.veg)
-  );
-  const [nonVegRecipeState, setnonVegRecipeState] = useState(
+  
+  const nonVegRecipeState = 
     useSelector((state) => state.category.nonVeg)
-  );
 
   useEffect(() => {
     dispatch(setSearch(searchString));
@@ -32,20 +31,16 @@ export default function Recipes() {
   }, [searchString]);
 
   const handleVeg = (event) => {
-    setVegRecipeState(event.target.checked);
     dispatch(setVeg(event.target.checked));
     if (event.target.checked === true) {
-      setnonVegRecipeState(false);
       dispatch(setNonVeg(false));
     } else {
       dispatch(setFilteredRecipe(recipe));
     }
   };
   const handleNonVeg = (event) => {
-    setnonVegRecipeState(event.target.checked);
     dispatch(setNonVeg(event.target.checked));
     if (event.target.checked === true) {
-      setVegRecipeState(false);
       dispatch(setVeg(false));
     } else {
       dispatch(setFilteredRecipe(recipe));
@@ -65,7 +60,7 @@ export default function Recipes() {
             <FontAwesomeIcon icon={faSearch} />
           </button>
         </div>
-        <FormGroup aria-label="position" row>
+        <FormGroup aria-label="position" row >
           <FormControlLabel
             className="form-label"
             control={

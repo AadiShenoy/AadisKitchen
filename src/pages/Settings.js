@@ -1,8 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
+import Switch from "@mui/material/Switch";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setDark, setLight } from "../actions/action";
 
 export default function Settings() {
+  const dispatch = useDispatch();
   const [settings, setSettings] = useState(localStorage.getItem("settings"));
   useEffect(() => {
     const root = document.documentElement;
@@ -11,7 +18,6 @@ export default function Settings() {
     }
   }, [settings]);
 
-  const [theme, setTheme] = useState(localStorage.getItem('theme'));
   const themes = [
     {
       "--background-color": "#fff",
@@ -31,7 +37,6 @@ export default function Settings() {
 
   function changeTheme(i) {
     const _theme = { ...themes[i] };
-    setTheme(i === 0 ? "light" : "dark");
     localStorage.setItem("theme", i === 0 ? "light" : "dark");
     let _settings = { ...settings };
     for (let key in _theme) {
@@ -51,26 +56,6 @@ export default function Settings() {
     localStorage.setItem("settings", _settings);
   }
 
-  function changeFontSize(i) {
-    const _size = fontSizes[i];
-    let _settings = { ...settings };
-    _settings["--font-size"] = _size.value;
-    setFontSize(i);
-    localStorage.setItem("fontSize", i);
-    setSettings(_settings);
-    localStorage.setItem("settings", _settings);
-  }
-
-  function changeAnimationSpeed(i) {
-    let _speed = animationSpeeds[i];
-    let _settings = { ...settings };
-    _settings["--animation-speed"] = _speed.value;
-    setAnimationSpeed(i);
-    localStorage.setItem("animationSpeed", i);
-    setSettings(_settings);
-    localStorage.setItem("settings", _settings);
-  }
-
   const primaryColors = [
     "rgb(255, 0, 86)",
     "rgb(33, 150, 243)",
@@ -78,64 +63,66 @@ export default function Settings() {
     "rgb(0, 200, 83)",
     "rgb(156, 39, 176)",
   ];
-  const fontSizes = [
-    {
-      title: "Small",
-      value: "12px",
-    },
-    {
-      title: "Medium",
-      value: "16px",
-    },
-    {
-      title: "Large",
-      value: "20px",
-    },
-  ];
-  const animationSpeeds = [
-    {
-      title: "Slow",
-      value: 2,
-    },
-    {
-      title: "Medium",
-      value: 1,
-    },
-    {
-      title: "Fast",
-      value: 0.5,
-    },
-  ];
+
   const [primaryColor, setPrimaryColor] = useState(
     Number(localStorage.getItem("primaryColor"))
   );
-  const [fontSize, setFontSize] = useState(Number(localStorage.getItem("fontSize")));
-  const [animationSpeed, setAnimationSpeed] = useState(
-    Number(localStorage.getItem("animationSpeed"))
-  );
+
+  const light = useSelector((state) => state.category.light);
+  const dark = useSelector((state) => state.category.dark);
+
+  const handleLight = (event) => {
+    if (event.target.checked) {
+      dispatch(setLight(true));
+      dispatch(setDark(false));
+      changeTheme(0);
+    } else {
+      changeTheme(1);
+      dispatch(setLight(false));
+      dispatch(setDark(true));
+    }
+  };
+
+  const handleDark = (event) => {
+    if (event.target.checked) {
+      dispatch(setLight(false));
+      dispatch(setDark(true));
+      changeTheme(1);
+    } else {
+      changeTheme(0);
+      dispatch(setLight(true));
+      dispatch(setDark(false));
+    }
+  };
+
   return (
-    <div>
+    <div className="settings-div">
       <div className="section d-block">
-        <h2>Primary Theme</h2>
+        <h2>Background</h2>
         <div className="options-container">
-          <div className="option light" onClick={() => changeTheme(0)}>
-            {theme === "light" && (
-              <div className="check">
-                <FontAwesomeIcon icon={faCheck} />
-              </div>
-            )}
-          </div>
-          <div className="option dark" onClick={() => changeTheme(1)}>
-            {theme === "dark" && (
-              <div className="check">
-                <FontAwesomeIcon icon={faCheck} />
-              </div>
-            )}
-          </div>
+        <FormGroup aria-label="position" row>
+          <FormControlLabel
+            style={{ marginLeft: "0px" }}
+            className="form-label"
+            control={
+              <Switch checked={light} onChange={handleLight} color="warning" />
+            }
+            label="Light"
+            labelPlacement="start"
+          />
+          <FormControlLabel
+            className="form-label"
+            control={
+              <Switch checked={dark} onChange={handleDark} color="warning" />
+            }
+            label="Dark"
+            labelPlacement="start"
+          />
+        </FormGroup>
         </div>
       </div>
-      <div className="section d-block">
-        <h2>Preferred color</h2>
+      <div className="section d-block settings-div" >
+        <h2>Font color</h2>
         <div className="options-container">
           {primaryColors.map((color, index) => (
             <div
@@ -150,44 +137,6 @@ export default function Settings() {
                 </div>
               )}
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="section d-block">
-        <h2>Font size</h2>
-        <div className="options-container">
-          {fontSizes.map((size, index) => (
-            <button
-              key={index}
-              className="btn"
-              onClick={() => changeFontSize(index)}
-            >
-              {size.title}
-              {fontSize === index && (
-                <span>
-                  <FontAwesomeIcon icon={faCheck} />
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="section d-block">
-        <h2>Animation speed</h2>
-        <div className="options-container">
-          {animationSpeeds.map((speed, index) => (
-            <button
-              key={index}
-              className="btn"
-              onClick={() => changeAnimationSpeed(index)}
-            >
-              {speed.title}
-              {animationSpeed === index && (
-                <span>
-                  <FontAwesomeIcon icon={faCheck} />
-                </span>
-              )}
-            </button>
           ))}
         </div>
       </div>

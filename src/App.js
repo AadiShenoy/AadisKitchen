@@ -35,10 +35,7 @@ function App() {
         "--animation-speed": 1,
       })
     );
-    localStorage.setItem("theme", "light");
     localStorage.setItem("primaryColor", 0);
-    localStorage.setItem("fontSize", 1);
-    localStorage.setItem("animationSpeed", 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
