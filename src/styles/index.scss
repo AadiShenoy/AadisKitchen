@@ -117,6 +117,10 @@ img {
 @import "partials/search.scss";
 @import "partials/recipes-section.scss";
 
+.form-label{
+  color: var(--text-color);
+}
+
 .options-container {
   box-shadow: 0 5px 10px var(--shadow-color);
   padding: 1em;

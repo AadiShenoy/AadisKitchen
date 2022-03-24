@@ -2,51 +2,54 @@ import { useState, useEffect } from "react";
 import RecipeCard from "../components/RecipeCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import Switch from "@mui/material/Switch";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {
+  setNonVeg,
+  setVeg,
+  setFilteredRecipe,
+  setSearch,
+} from "../actions/action";
 
-export default function Recipes({ recipe }) {
-  const [filteredRecipe, setFilteredRecipe] = useState(recipe);
-  const [search, setSearch] = useState("");
-  const [allRecipeState, setallRecipeState] = useState(true);
-  const [vegRecipeState, setVegRecipeState] = useState(false);
-  const [nonVegRecipeState, setnonVegRecipeState] = useState(false);
+export default function Recipes() {
+  const recipe = useSelector((state) => state.category.recipe);
+  const filteredRecipe = useSelector((state) => state.category.filteredRecipe);
+  const dispatch = useDispatch();
+  const [searchString, setSearchString] = useState("");
+  const [vegRecipeState, setVegRecipeState] = useState(
+    useSelector((state) => state.category.veg)
+  );
+  const [nonVegRecipeState, setnonVegRecipeState] = useState(
+    useSelector((state) => state.category.nonVeg)
+  );
+
   useEffect(() => {
-    setallRecipeState(true);
-    setVegRecipeState(false);
-    setnonVegRecipeState(false);
-    setFilteredRecipe(
-      recipe.filter((fitem) => {
-        return fitem.title.toLowerCase().includes(search.toLowerCase());
-      })
-    );
-  }, [search, recipe]);
+    dispatch(setSearch(searchString));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchString]);
 
-  const allrecipe = () => {
-    setVegRecipeState(false);
-    setnonVegRecipeState(false);
-    setallRecipeState(true);
-    setFilteredRecipe(recipe);
+  const handleVeg = (event) => {
+    setVegRecipeState(event.target.checked);
+    dispatch(setVeg(event.target.checked));
+    if (event.target.checked === true) {
+      setnonVegRecipeState(false);
+      dispatch(setNonVeg(false));
+    } else {
+      dispatch(setFilteredRecipe(recipe));
+    }
   };
-
-  const vegRecipe = () => {
-    setallRecipeState(false);
-    setnonVegRecipeState(false);
-    setVegRecipeState(true);
-    setFilteredRecipe(
-      recipe.filter((item) => {
-        return item.category === "veg";
-      })
-    );
-  };
-
-  const nonVegRecipe = () => {
-    setVegRecipeState(false);
-    setallRecipeState(false);
-    setnonVegRecipeState(true);
-    setFilteredRecipe(
-      recipe.filter((item) => {
-        return item.category !== "veg";
-      })
-    );
+  const handleNonVeg = (event) => {
+    setnonVegRecipeState(event.target.checked);
+    dispatch(setNonVeg(event.target.checked));
+    if (event.target.checked === true) {
+      setVegRecipeState(false);
+      dispatch(setVeg(false));
+    } else {
+      dispatch(setFilteredRecipe(recipe));
+    }
   };
 
   return (
@@ -56,33 +59,38 @@ export default function Recipes({ recipe }) {
           <input
             type="text"
             placeholder="Search All..."
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => setSearchString(e.target.value)}
           />
           <button className="btn">
             <FontAwesomeIcon icon={faSearch} />
           </button>
         </div>
-        <button
-          className="filterButton"
-          onClick={allrecipe}
-          style={{ backgroundColor: allRecipeState ? "#f7e5e4" : "white" }}
-        >
-          All
-        </button>
-        <button
-          className="filterButton left"
-          onClick={vegRecipe}
-          style={{ backgroundColor: vegRecipeState ? "#f7e5e4" : "white" }}
-        >
-          Veg
-        </button>
-        <button
-          className="filterButton left"
-          onClick={nonVegRecipe}
-          style={{ backgroundColor: nonVegRecipeState ? "#f7e5e4" : "white" }}
-        >
-          Non-Veg
-        </button>
+        <FormGroup aria-label="position" row>
+          <FormControlLabel
+            className="form-label"
+            control={
+              <Switch
+                checked={vegRecipeState}
+                onChange={handleVeg}
+                color="warning"
+              />
+            }
+            label="Veg"
+            labelPlacement="start"
+          />
+          <FormControlLabel
+            className="form-label"
+            control={
+              <Switch
+                checked={nonVegRecipeState}
+                onChange={handleNonVeg}
+                color="warning"
+              />
+            }
+            label="Non-Veg"
+            labelPlacement="start"
+          />
+        </FormGroup>
       </div>
       <div className="recipes-container">
         {filteredRecipe.map((recipe, index) => (

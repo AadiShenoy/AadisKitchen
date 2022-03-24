@@ -5,19 +5,21 @@ import Recipes from "./pages/Recipes";
 import Settings from "./pages/Settings";
 import ScrollToTop from "./components/ScrollToTop";
 import RecipeDetail from "./pages/RecipeDetail";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setRecipe } from "../src/actions/action";
 
 function App() {
-  const [recipe, setRecipe] = useState([]);
-
+  const dispatch = useDispatch();
   const fetchitem = async () => {
     const ms = Date.now();
     const data = await fetch(
       "https://aadishenoy.github.io/Food-JSON/dataFile.json?dummy=" + ms
     );
     const jdata = await data.json();
-    setRecipe(jdata);
+    dispatch(setRecipe(jdata));
   };
+
   useEffect(() => {
     fetchitem();
     localStorage.setItem(
@@ -37,6 +39,7 @@ function App() {
     localStorage.setItem("primaryColor", 0);
     localStorage.setItem("fontSize", 1);
     localStorage.setItem("animationSpeed", 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -45,8 +48,8 @@ function App() {
       <Navbar />
       <div className="container main">
         <Routes>
-          <Route path="/" element={<Home recipe={recipe}/>} />
-          <Route path="/recipes" element={<Recipes recipe={recipe} />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/recipes" element={<Recipes />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/detail" element={<RecipeDetail />} />
         </Routes>
