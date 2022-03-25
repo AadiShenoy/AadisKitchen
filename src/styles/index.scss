@@ -49,6 +49,9 @@ img {
     box-shadow: 0 1px 3px var(--shadow-color);
   }
 }
+h2,h3,p{
+  color: var(--text-color);
+}
 
 .custom-image {
   background-color: var(--background-color);
@@ -125,7 +128,7 @@ img {
   box-shadow: 0 5px 10px var(--shadow-color);
   padding: 1em;
   border-radius: 5px;
-  background-color: var(--background-light);
+  background-color:pink;
   margin-top: 1em;
   display: flex;
   gap: 1em;

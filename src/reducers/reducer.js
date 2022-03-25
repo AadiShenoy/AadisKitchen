@@ -7,7 +7,6 @@ const initialState = {
   nonVegFilter: [],
   veg: false,
   nonVeg: false,
-  light: true,
   dark: false,
 };
 
@@ -71,9 +70,6 @@ export const reducer = (state = initialState, { type, payload }) => {
         });
       }
       return { ...state, filteredRecipe: tempFilter };
-
-    case ActionTypes.SET_LIGHT:
-      return { ...state, light: payload };
 
     case ActionTypes.SET_DARK:
       return { ...state, dark: payload };

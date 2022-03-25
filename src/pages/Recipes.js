@@ -19,11 +19,9 @@ export default function Recipes() {
   const filteredRecipe = useSelector((state) => state.category.filteredRecipe);
   const dispatch = useDispatch();
   const [searchString, setSearchString] = useState("");
-  const vegRecipeState = 
-    useSelector((state) => state.category.veg)
-  
-  const nonVegRecipeState = 
-    useSelector((state) => state.category.nonVeg)
+  const vegRecipeState = useSelector((state) => state.category.veg);
+
+  const nonVegRecipeState = useSelector((state) => state.category.nonVeg);
 
   useEffect(() => {
     dispatch(setSearch(searchString));
@@ -60,14 +58,15 @@ export default function Recipes() {
             <FontAwesomeIcon icon={faSearch} />
           </button>
         </div>
-        <FormGroup aria-label="position" row >
+        <FormGroup aria-label="position" row>
           <FormControlLabel
             className="form-label"
             control={
               <Switch
                 checked={vegRecipeState}
                 onChange={handleVeg}
-                color="warning"
+                color="default"
+                style={{ color: vegRecipeState ? "black" : "white" }}
               />
             }
             label="Veg"
@@ -79,7 +78,8 @@ export default function Recipes() {
               <Switch
                 checked={nonVegRecipeState}
                 onChange={handleNonVeg}
-                color="warning"
+                color="default"
+                style={{ color: nonVegRecipeState ? "black" : "white" }}
               />
             }
             label="Non-Veg"

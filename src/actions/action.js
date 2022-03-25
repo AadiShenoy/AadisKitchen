@@ -35,13 +35,6 @@ export const setSearch = (search) => {
   };
 };
 
-export const setLight = (bool) => {
-  return {
-    type: ActionTypes.SET_LIGHT,
-    payload: bool,
-  };
-};
-
 export const setDark = (bool) => {
   return {
     type: ActionTypes.SET_DARK,

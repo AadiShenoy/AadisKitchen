@@ -4,6 +4,5 @@ export const ActionTypes = {
   SET_VEG: "SET_VEG",
   SET_NONVEG: "SET_NONVEG",
   SET_SEARCH: "SET_SEARCH",
-  SET_LIGHT: "SET_LIGHT",
   SET_DARK: "SET_DARK",
 };

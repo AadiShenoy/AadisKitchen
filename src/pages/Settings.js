@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
-import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setDark, setLight } from "../actions/action";
+import { setDark } from "../actions/action";
+import { MaterialUISwitch } from "../components/Switch";
 
 export default function Settings() {
   const dispatch = useDispatch();
@@ -68,29 +68,14 @@ export default function Settings() {
     Number(localStorage.getItem("primaryColor"))
   );
 
-  const light = useSelector((state) => state.category.light);
   const dark = useSelector((state) => state.category.dark);
-
-  const handleLight = (event) => {
-    if (event.target.checked) {
-      dispatch(setLight(true));
-      dispatch(setDark(false));
-      changeTheme(0);
-    } else {
-      changeTheme(1);
-      dispatch(setLight(false));
-      dispatch(setDark(true));
-    }
-  };
 
   const handleDark = (event) => {
     if (event.target.checked) {
-      dispatch(setLight(false));
       dispatch(setDark(true));
       changeTheme(1);
     } else {
       changeTheme(0);
-      dispatch(setLight(true));
       dispatch(setDark(false));
     }
   };
@@ -100,28 +85,18 @@ export default function Settings() {
       <div className="section d-block">
         <h2>Background</h2>
         <div className="options-container">
-        <FormGroup aria-label="position" row>
-          <FormControlLabel
-            style={{ marginLeft: "0px" }}
-            className="form-label"
-            control={
-              <Switch checked={light} onChange={handleLight} color="warning" />
-            }
-            label="Light"
-            labelPlacement="start"
-          />
-          <FormControlLabel
-            className="form-label"
-            control={
-              <Switch checked={dark} onChange={handleDark} color="warning" />
-            }
-            label="Dark"
-            labelPlacement="start"
-          />
-        </FormGroup>
+          <FormGroup aria-label="position" row>
+            <FormControlLabel
+              control={<MaterialUISwitch checked={dark} onChange={handleDark}/>}
+              label={dark?"Dark":"Light"}
+              labelPlacement="start"
+              style={{marginLeft:0}}
+             
+            />
+          </FormGroup>
         </div>
       </div>
-      <div className="section d-block settings-div" >
+      <div className="section d-block settings-div">
         <h2>Font color</h2>
         <div className="options-container">
           {primaryColors.map((color, index) => (
