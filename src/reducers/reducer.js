@@ -16,7 +16,7 @@ export const reducer = (state = initialState, { type, payload }) => {
       return { ...state, recipe: payload, filteredRecipe: payload };
 
     case ActionTypes.SET_FILTERED_RECIPE:
-      return { ...state, filteredRecipe: payload };
+      return { ...state, filteredRecipe: state.recipe };
 
     case ActionTypes.SET_VEG:
       if (payload) {

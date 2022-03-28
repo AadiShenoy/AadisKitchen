@@ -5,8 +5,8 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+
 import {
   setNonVeg,
   setVeg,
@@ -15,12 +15,10 @@ import {
 } from "../actions/action";
 
 export default function Recipes() {
-  const recipe = useSelector((state) => state.category.recipe);
   const filteredRecipe = useSelector((state) => state.category.filteredRecipe);
   const dispatch = useDispatch();
   const [searchString, setSearchString] = useState("");
   const vegRecipeState = useSelector((state) => state.category.veg);
-
   const nonVegRecipeState = useSelector((state) => state.category.nonVeg);
 
   useEffect(() => {
@@ -33,7 +31,7 @@ export default function Recipes() {
     if (event.target.checked === true) {
       dispatch(setNonVeg(false));
     } else {
-      dispatch(setFilteredRecipe(recipe));
+      dispatch(setFilteredRecipe());
     }
   };
   const handleNonVeg = (event) => {
@@ -41,13 +39,13 @@ export default function Recipes() {
     if (event.target.checked === true) {
       dispatch(setVeg(false));
     } else {
-      dispatch(setFilteredRecipe(recipe));
+      dispatch(setFilteredRecipe());
     }
   };
 
   return (
     <div>
-      <div className="previous-searches section">
+      <div className="searches section">
         <div className="search-box">
           <input
             type="text"

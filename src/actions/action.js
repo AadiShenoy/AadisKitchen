@@ -7,10 +7,9 @@ export const setRecipe = (recipe) => {
   };
 };
 
-export const setFilteredRecipe = (recipe) => {
+export const setFilteredRecipe = () => {
   return {
     type: ActionTypes.SET_FILTERED_RECIPE,
-    payload: recipe,
   };
 };
 
