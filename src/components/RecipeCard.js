@@ -6,6 +6,8 @@ import veg from "../assets/veg.png";
 import nonveg from "../assets/nonveg.png";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-solid-svg-icons";
 export default function RecipeCard({ recipe }) {
   useEffect(() => {
     Aos.init({ duration: 700 });
@@ -77,7 +79,7 @@ export default function RecipeCard({ recipe }) {
           <Link className="view-btn" to="/detail" state={{ recipe: recipe }}>
             VIEW RECIPE
           </Link>
-          <p className="date">{result}</p>
+          <p className="date"><FontAwesomeIcon icon={faClock} />{" " +result}</p>
         </div>
       </div>
     </div>
