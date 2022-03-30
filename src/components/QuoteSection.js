@@ -4,7 +4,7 @@ import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons"
 export default function QouteSection(){
     return (
         <div className="section quote">
-            <p className="qoute-text"><FontAwesomeIcon icon={faQuoteLeft} /> Food is everything we are. It's an extension of nationalist feeling, ethnic feeling, your personal history, your province, your region, your tribe, your grandma. It's inseparable from those from the get-go.</p>
+            <p className="qoute-text"><FontAwesomeIcon icon={faQuoteLeft} />The most powerful social media... it is not the internet, it is not facebook - it is food. This connects all human beings</p>
         </div>
     )
 }
