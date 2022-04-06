@@ -1,47 +1,53 @@
-.section.chiefs{
-    display: block;
+.section.chiefs {
+  display: block;
 }
-.top-chiefs-container{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    grid-gap: 1.5em;
-    margin-top: 1.5em;
+.top-chiefs-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-gap: 1.5em;
+  margin-top: 1.5em;
 }
-.chief-card{
-    display: flex;
-    height: 130px;
-    background-color: var(--background-color);
+.chief-card {
+  display: flex;
+  height: 130px;
+  background-color: var(--background-color);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 5px 10px var(--shadow-color);
+  .img {
+    height: 100%;
+    width: 120px;
     border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 5px 10px var(--shadow-color);
-    img{
-        height: 100%;
-        width: 120px;
-        border-radius: 5px;
-        box-shadow: 0 3px 6px var(--shadow-color);
+    box-shadow: 0 3px 6px var(--shadow-color);
+  }
+  .loader {
+    margin-top: 30%;
+    margin-left: 30%;
+    color: gray;
+  }
+  .chief-card-info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 0.5em;
+    padding-left: 1em;
+    padding-top: 0.5em;
+    .chief-card-name {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: var(--text-color);
     }
-    .chief-card-info{
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding-bottom: .5em;
-        padding-left: 1em;
-        padding-top: .5em;
-        .chief-card-name{
-            font-size: 1.5em;
-            font-weight: bold;
-            color: var(--text-color);
-        }
-        .chief-recipe-count, .chief-cuisine{
-            font-size: 1.1em;
-            color: var(--text-light);
-        }
-        .cheif-icons{
-            font-size: 1.2em;
-            svg{
-                margin-right: 0.75em;
-            }
-        }
+    .chief-recipe-count,
+    .chief-cuisine {
+      font-size: 1.1em;
+      color: var(--text-light);
     }
+    .cheif-icons {
+      font-size: 1.2em;
+      svg {
+        margin-right: 0.75em;
+      }
+    }
+  }
 }
