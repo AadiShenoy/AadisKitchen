@@ -5,9 +5,10 @@ import Recipes from "./pages/Recipes";
 import Settings from "./pages/Settings";
 import ScrollToTop from "./components/ScrollToTop";
 import RecipeDetail from "./pages/RecipeDetail";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setRecipe } from "../src/actions/action";
+import axios from "axios";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,8 +20,30 @@ function App() {
     const jdata = await data.json();
     dispatch(setRecipe(jdata));
   };
-
+  const [count, setCount] = useState(0);
   useEffect(() => {
+    if (!localStorage.getItem("visited")) {
+      axios
+        .put("https://aadis-kitchen.herokuapp.com/")
+        .then((res) => {
+          console.log(res.data.count,typeof(res.data.count));
+          setCount(res.data.count);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      localStorage.setItem("visited", "yes");
+    } else {
+      axios
+        .get("https://aadis-kitchen.herokuapp.com/")
+        .then((res) => {
+          console.log(res.data.count,typeof(res.data.count));
+          setCount(res.data.count);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
     fetchitem();
     localStorage.setItem(
       "settings",
@@ -45,7 +68,7 @@ function App() {
       <Navbar />
       <div className="container main">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home count={count} />} />
           <Route path="/recipes" element={<Recipes />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/detail" element={<RecipeDetail />} />
