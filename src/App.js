@@ -54,8 +54,6 @@ function App() {
         "--shadow-color": "rgba(0,0,0,0.2)",
         "--text-color": "#0A0A0A",
         "--text-light": "#575757",
-        "--font-size": "16px",
-        "--animation-speed": 1,
       })
     );
     localStorage.setItem("primaryColor", 0);
