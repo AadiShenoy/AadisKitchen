@@ -3,48 +3,45 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Recipes from "./pages/Recipes";
 import Settings from "./pages/Settings";
-import ScrollToTop from "./components/ScrollToTop";
+// import ScrollToTop from "./components/ScrollToTop";
 import RecipeDetail from "./pages/RecipeDetail";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setRecipe } from "../src/actions/action";
-import axios from "axios";
+import { setRecipe, setCount } from "../src/actions/action";
+import { db, remoteConfig } from "./firebase-config";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { fetchAndActivate, getValue } from "firebase/remote-config";
 
 function App() {
   const dispatch = useDispatch();
+  const recipeCollectionRef = collection(db, "recipe");
+  const countCollectionRef = collection(db, "totalCount");
+  const [adminAuthCred, setAdminAuthCred] = useState({});
+
   const fetchitem = async () => {
-    const ms = Date.now();
-    const data = await fetch(
-      "https://aadishenoy.github.io/Food-JSON/dataFile.json?dummy=" + ms
+    const data = await getDocs(
+      query(recipeCollectionRef, orderBy("sortId", "desc"))
     );
-    const jdata = await data.json();
-    dispatch(setRecipe(jdata));
+    dispatch(
+      setRecipe(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    );
   };
-  const [count, setCount] = useState(0);
+  
+  const fetchCount = async () => {
+    const countData = await getDocs(countCollectionRef);
+    dispatch(setCount(countData.docs.map((doc) => ({ ...doc.data() }))[0].count));
+  };
+
+  const handleFetch = async () => {
+    await fetchAndActivate(remoteConfig).then(() => {
+      setAdminAuthCred(JSON.parse(getValue(remoteConfig, "admin_cred")._value));
+    });
+  };
+
   useEffect(() => {
-    if (!localStorage.getItem("visited")) {
-      axios
-        .put("https://aadis-kitchen.herokuapp.com/")
-        .then((res) => {
-          console.log(res.data.count,typeof(res.data.count));
-          setCount(res.data.count);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      localStorage.setItem("visited", "yes");
-    } else {
-      axios
-        .get("https://aadis-kitchen.herokuapp.com/")
-        .then((res) => {
-          console.log(res.data.count,typeof(res.data.count));
-          setCount(res.data.count);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
     fetchitem();
+    fetchCount();
+    handleFetch();
     localStorage.setItem(
       "settings",
       JSON.stringify({
@@ -62,13 +59,16 @@ function App() {
 
   return (
     <Router>
-      <ScrollToTop />
+      {/* <ScrollToTop /> */}
       <Navbar />
       <div className="container main">
         <Routes>
-          <Route path="/" element={<Home count={count} />} />
+          <Route path="/" element={<Home />} />
           <Route path="/recipes" element={<Recipes />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route
+            path="/settings"
+            element={<Settings adminAuthCred={adminAuthCred} />}
+          />
           <Route path="/detail" element={<RecipeDetail />} />
         </Routes>
       </div>

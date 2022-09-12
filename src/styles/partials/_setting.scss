@@ -1,0 +1,8 @@
+.admin-container {
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+    p {
+      color: var(--text-color);
+    }
+  }

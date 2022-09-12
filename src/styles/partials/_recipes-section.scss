@@ -52,12 +52,56 @@
 }
 .date {
   color: var(--text-light);
-  font-size:12px;
+  font-size: 12px;
   margin-top: 3px;
 }
-.back-arrow{
+.back-arrow {
   margin-top: 10px;
   font-size: 35px;
-  margin-left:10px;
+  margin-left: 10px;
   color: var(--text-color);
+}
+.add-btn {
+  color: var(--primary-color) !important;
+  margin-left: 10px;
+  font-size: 1rem !important;
+}
+
+//------------recipe detail
+.recipeDetailConatiner {
+  background-color: #eff4f7;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  .wrapper-div {
+    display: flex;
+    h2 {
+      display: inline !important;
+    }
+    div {
+      display: inline;
+      margin-left: auto;
+      .trash-icon,
+      .edit-icon {
+        margin-left: 15px;
+        cursor: pointer;
+        font-size: 1.2rem;
+      }
+    }
+  }
+  img {
+    width: 250px;
+    height: 250px;
+    margin-top: 10px;
+    border-radius: 5px;
+    display: block;
+  }
+  p {
+    white-space: pre-line;
+  }
+}
+
+.capitalise{
+  text-transform: capitalize;
 }

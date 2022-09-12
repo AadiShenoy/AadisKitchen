@@ -8,7 +8,9 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
-export default function RecipeCard({ recipe }) {
+
+export default function RecipeCard({ recipe}) {
+
   useEffect(() => {
     Aos.init({ duration: 700 });
   }, []);
@@ -27,7 +29,6 @@ export default function RecipeCard({ recipe }) {
   var a = moment(result, "M/D/YYYY");
   var b = moment(recipe.date, "M/D/YYYY");
   var diffDays = a.diff(b, "days");
-  console.log(parseInt(diffDays / 365));
   if (parseInt(diffDays / 365) > 0) {
     result = parseInt(diffDays / 365);
     if (result === 1) {
@@ -53,11 +54,22 @@ export default function RecipeCard({ recipe }) {
     }
   }
 
+  const handleVisit = () => {
+    sessionStorage.setItem("recipeVisit", true);
+    if (sessionStorage.getItem("recipeVisit")) {
+      sessionStorage.setItem("pageOffset",window.scrollY)
+    }
+  };
+
   return (
-    <div className="recipe-card" data-aos="zoom-in" data-aos-offset="100">
+    <div
+      className="recipe-card"
+      data-aos="zoom-in"
+      data-aos-offset="100"
+    >
       <CustomImage imgSrc={recipe.image} pt="75%" />
       <div className="recipe-card-info">
-        <p className="recipe-title">{recipe.title}</p>
+        <p className="recipe-title capitalise">{recipe.title}</p>
         <div style={{ display: "flex", flexDirection: "row" }}>
           <img
             className="category"
@@ -76,10 +88,18 @@ export default function RecipeCard({ recipe }) {
             marginTop: "0.5em",
           }}
         >
-          <Link className="view-btn" to="/detail" state={{ recipe: recipe }}>
+          <Link
+            className="view-btn"
+            to="/detail"
+            state={{ recipe: recipe }}
+            onClick={handleVisit}
+          >
             VIEW RECIPE
           </Link>
-          <p className="date"><FontAwesomeIcon icon={faClock} />{" " +result}</p>
+          <p className="date">
+            <FontAwesomeIcon icon={faClock} />
+            {" " + result}
+          </p>
         </div>
       </div>
     </div>

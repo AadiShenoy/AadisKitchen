@@ -7,6 +7,34 @@ export const setRecipe = (recipe) => {
   };
 };
 
+export const deleteRecipe = (recipe) => {
+  return {
+    type: ActionTypes.DELETE_RECIPE,
+    payload: recipe,
+  };
+};
+
+export const updateRecipe = (recipe) => {
+  return {
+    type: ActionTypes.UPDATE_RECIPE,
+    payload: recipe,
+  };
+};
+
+export const setCount = (count) => {
+  return {
+    type: ActionTypes.SET_COUNT,
+    payload: count,
+  };
+};
+
+export const addNewRecipe = (recipe) => {
+  return {
+    type: ActionTypes.ADD_NEW_RECIPE,
+    payload: recipe,
+  };
+};
+
 export const setFilteredRecipe = () => {
   return {
     type: ActionTypes.SET_FILTERED_RECIPE,
@@ -40,5 +68,3 @@ export const setDark = (bool) => {
     payload: bool,
   };
 };
-
-

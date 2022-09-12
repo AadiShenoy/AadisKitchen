@@ -1,5 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faSignIn,
+  faEyeSlash,
+  faEye,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -7,10 +12,33 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setDark } from "../actions/action";
 import { MaterialUISwitch } from "../components/Switch";
+import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  TextField,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import swal from "sweetalert";
 
-export default function Settings() {
+export default function Settings({ adminAuthCred }) {
   const dispatch = useDispatch();
   const [settings, setSettings] = useState(localStorage.getItem("settings"));
+  const [open, setOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const adminCred = {
+    name: "",
+    password: "",
+  };
+  const [credentials, setCredentials] = useState(adminCred);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    sessionStorage.removeItem("recipeVisit");
+  }, []);
   useEffect(() => {
     const root = document.documentElement;
     for (let key in settings) {
@@ -79,19 +107,47 @@ export default function Settings() {
       dispatch(setDark(false));
     }
   };
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setCredentials({ ...credentials, [name]: value });
+  };
+
+  const handleLogin = () => {
+    if (
+      adminAuthCred.name === credentials.name &&
+      adminAuthCred.password === credentials.password
+    ) {
+      sessionStorage.setItem("Admin", true);
+      navigate("/recipes");
+    } else {
+      swal("Invalid credentials!", "Please check Name and password", "error");
+    }
+    setOpen(false);
+  };
 
   return (
     <div className="settings-div">
+      <div
+       className="admin-container"
+        onClick={() => setOpen(true)}
+      >
+        <p>
+          {"Admin "}
+          <FontAwesomeIcon icon={faSignIn} />
+        </p>
+      </div>
+
       <div className="section d-block">
         <h2>Background</h2>
         <div className="options-container">
           <FormGroup aria-label="position" row>
             <FormControlLabel
-              control={<MaterialUISwitch checked={dark} onChange={handleDark}/>}
-              label={dark?"Dark":"Light"}
+              control={
+                <MaterialUISwitch checked={dark} onChange={handleDark} />
+              }
+              label={dark ? "Dark" : "Light"}
               labelPlacement="start"
-              style={{marginLeft:0}}
-             
+              style={{ marginLeft: 0 }}
             />
           </FormGroup>
         </div>
@@ -115,6 +171,62 @@ export default function Settings() {
           ))}
         </div>
       </div>
+      <Dialog
+        open={open}
+        PaperProps={{
+          style: { borderRadius: 10 },
+        }}
+        onClose={() => {
+          setOpen(false);
+          setShowPassword(false);
+        }}
+      >
+        <DialogContent>
+          <h3>Admin Credentials</h3>
+          <TextField
+            id="name"
+            label="Admin Name"
+            variant="outlined"
+            fullWidth
+            name="name"
+            value={credentials.date}
+            onChange={handleInputChange}
+            className="textfield"
+            autoComplete="off"
+          />
+          <TextField
+            id="password"
+            label="Admin Password"
+            variant="outlined"
+            type={showPassword ? "text" : "password"}
+            fullWidth
+            name="password"
+            value={credentials.title}
+            onChange={handleInputChange}
+            className="textfield"
+            autoComplete="off"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <FontAwesomeIcon icon={faEye} />
+                    ) : (
+                      <FontAwesomeIcon icon={faEyeSlash} />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <div className="submit-btn">
+            <Button onClick={handleLogin}>Submit</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

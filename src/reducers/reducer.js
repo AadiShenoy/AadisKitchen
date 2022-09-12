@@ -8,6 +8,7 @@ const initialState = {
   veg: false,
   nonVeg: false,
   dark: false,
+  count: 0,
 };
 
 export const reducer = (state = initialState, { type, payload }) => {
@@ -15,8 +16,33 @@ export const reducer = (state = initialState, { type, payload }) => {
     case ActionTypes.SET_RECIPE:
       return { ...state, recipe: payload, filteredRecipe: payload };
 
+    case ActionTypes.SET_COUNT:
+      return { ...state, count: payload };
+
     case ActionTypes.SET_FILTERED_RECIPE:
       return { ...state, filteredRecipe: state.recipe };
+
+    case ActionTypes.ADD_NEW_RECIPE:
+      return {
+        ...state,
+        filteredRecipe: [payload, ...state.recipe],
+        recipe: [payload, ...state.recipe],
+      };
+
+    case ActionTypes.DELETE_RECIPE:
+      let recipeAfterDelete = state.filteredRecipe.filter(
+        (recipe) => recipe.id !== payload
+      );
+      return { ...state, recipe: recipeAfterDelete };
+
+    case ActionTypes.UPDATE_RECIPE:
+      let tempRecipeArray = [...state.recipe];
+      for (let i = 0; i < tempRecipeArray.length; i++) {
+        if (tempRecipeArray[i].id === payload.id) {
+          tempRecipeArray[i] = payload;
+        }
+      }
+      return { ...state, recipe: tempRecipeArray };
 
     case ActionTypes.SET_VEG:
       if (payload) {

@@ -116,8 +116,9 @@ img {
 @import "partials/chiefs-section.scss";
 @import "partials/search.scss";
 @import "partials/recipes-section.scss";
+@import "partials/setting.scss";
 
-.form-label{
+.form-label {
   color: var(--text-color);
 }
 
@@ -125,7 +126,7 @@ img {
   box-shadow: 0 5px 10px var(--shadow-color);
   padding: 1em;
   border-radius: 5px;
-  background-color:pink;
+  background-color: pink;
   margin-top: 1em;
   display: flex;
   gap: 1em;
@@ -252,7 +253,7 @@ img {
       padding-left: 0;
     }
   }
-  .settings-div{
+  .settings-div {
     margin-top: 30px;
   }
 }
@@ -260,4 +261,24 @@ img {
   .container {
     padding-inline: 3vw;
   }
+}
+.total-view-container {
+  background-color: black;
+  padding: 15px;
+  border-radius: 5px;
+  h1 {
+    text-align: center;
+    color: white;
+    font-size: 25px;
+  }
+  .eye-icon {
+    font-size: 22px;
+  }
+}
+.textfield {
+  margin-top: 0.8rem !important;
+}
+.submit-btn {
+  text-align: center;
+  padding: 10px;
 }
