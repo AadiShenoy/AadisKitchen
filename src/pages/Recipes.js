@@ -135,7 +135,7 @@ export default function Recipes() {
       </div>
       <div className="recipes-container">
         {filteredRecipe.map((recipe, index) => (
-          <RecipeCard key={index} recipe={recipe} />
+          <RecipeCard key={index} recipe={recipe}/>
         ))}
       </div>
       <Dialog

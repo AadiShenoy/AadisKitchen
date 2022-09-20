@@ -8,9 +8,9 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
+import newLogo from "../assets/newLogo.png";
 
-export default function RecipeCard({ recipe}) {
-
+export default function RecipeCard({ recipe }) {
   useEffect(() => {
     Aos.init({ duration: 700 });
   }, []);
@@ -57,17 +57,21 @@ export default function RecipeCard({ recipe}) {
   const handleVisit = () => {
     sessionStorage.setItem("recipeVisit", true);
     if (sessionStorage.getItem("recipeVisit")) {
-      sessionStorage.setItem("pageOffset",window.scrollY)
+      sessionStorage.setItem("pageOffset", window.scrollY);
     }
   };
-
   return (
-    <div
-      className="recipe-card"
-      data-aos="zoom-in"
-      data-aos-offset="100"
-    >
+    <div className="recipe-card" data-aos="zoom-in" data-aos-offset="100">
       <CustomImage imgSrc={recipe.image} pt="75%" />
+      {diffDays < 8 && (
+        <div className="top-left">
+          <img
+            src={newLogo}
+            alt=""
+            style={{ height: "50px", width: "100px" }}
+          />
+        </div>
+      )}
       <div className="recipe-card-info">
         <p className="recipe-title capitalise">{recipe.title}</p>
         <div style={{ display: "flex", flexDirection: "row" }}>
