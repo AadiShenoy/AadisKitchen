@@ -3,7 +3,6 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Recipes from "./pages/Recipes";
 import Settings from "./pages/Settings";
-// import ScrollToTop from "./components/ScrollToTop";
 import RecipeDetail from "./pages/RecipeDetail";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";

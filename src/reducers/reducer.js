@@ -9,6 +9,8 @@ const initialState = {
   nonVeg: false,
   dark: false,
   count: 0,
+  liked: false,
+  likedFilter: [],
 };
 
 export const reducer = (state = initialState, { type, payload }) => {
@@ -44,6 +46,29 @@ export const reducer = (state = initialState, { type, payload }) => {
       }
       return { ...state, recipe: tempRecipeArray };
 
+    case ActionTypes.SET_LIKED_RECIPE:
+      let tempArray = [...state.recipe];
+      let likedRecipe = [];
+      if (payload.isLiked) {
+        tempArray.forEach((item) => {
+          if (payload.likedRecipe.includes(item.title)) {
+            likedRecipe.push(item);
+          }
+        });
+        return {
+          ...state,
+          likedFilter: likedRecipe,
+          liked: true,
+          filteredRecipe: likedRecipe,
+        };
+      } else {
+        return {
+          ...state,
+          liked: false,
+          filteredRecipe: tempArray,
+        };
+      }
+
     case ActionTypes.SET_VEG:
       if (payload) {
         const vegRecipe = state.recipe.filter((item) => {
@@ -52,6 +77,7 @@ export const reducer = (state = initialState, { type, payload }) => {
         return {
           ...state,
           veg: payload,
+          liked:false,
           filteredRecipe: vegRecipe,
           vegFilter: vegRecipe,
         };
@@ -70,6 +96,7 @@ export const reducer = (state = initialState, { type, payload }) => {
         return {
           ...state,
           nonVeg: payload,
+          liked:false,
           filteredRecipe: nonVegRecipe,
           nonVegFilter: nonVegRecipe,
         };
@@ -88,6 +115,12 @@ export const reducer = (state = initialState, { type, payload }) => {
         });
       } else if (state.nonVeg) {
         tempFilter = state.nonVegFilter.filter((item) => {
+          return item.title.toLowerCase().includes(payload.toLowerCase());
+        });
+      } else if (state.liked) {
+        console.log("first");
+        console.log(state.likedFilter);
+        tempFilter = state.likedFilter.filter((item) => {
           return item.title.toLowerCase().includes(payload.toLowerCase());
         });
       } else {

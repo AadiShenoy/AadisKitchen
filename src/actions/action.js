@@ -41,6 +41,13 @@ export const setFilteredRecipe = () => {
   };
 };
 
+export const displayLikedRecipe = (recipe) => {
+  return {
+    type: ActionTypes.SET_LIKED_RECIPE,
+    payload: recipe,
+  };
+}
+
 export const setVeg = (veg) => {
   return {
     type: ActionTypes.SET_VEG,

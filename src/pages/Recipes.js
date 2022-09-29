@@ -3,6 +3,7 @@ import RecipeCard from "../components/RecipeCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
+import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import {
   Switch,
   FormGroup,
@@ -11,6 +12,7 @@ import {
   DialogContent,
   TextField,
   Button,
+  debounce,
 } from "@mui/material";
 import {
   setNonVeg,
@@ -18,16 +20,19 @@ import {
   setFilteredRecipe,
   setSearch,
   addNewRecipe,
+  displayLikedRecipe,
 } from "../actions/action";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase-config";
-
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { AnimatePresence } from "framer-motion";
 export default function Recipes() {
   const filteredRecipe = useSelector((state) => state.category.filteredRecipe);
   const dispatch = useDispatch();
   const [searchString, setSearchString] = useState("");
   const vegRecipeState = useSelector((state) => state.category.veg);
   const nonVegRecipeState = useSelector((state) => state.category.nonVeg);
+  const likedRecipeState = useSelector((state) => state.category.liked);
   const [open, setOpen] = useState(false);
   const recipeObj = {
     sortId: new Date().getTime(),
@@ -38,9 +43,14 @@ export default function Recipes() {
     ingredients: "",
     instructions: "",
   };
+
   const [newRecipe, setNewRecipe] = useState(recipeObj);
   const recipeCollectionRef = collection(db, "recipe");
   const isadmin = sessionStorage.getItem("Admin");
+
+  const [likedRecipe, setLikedRecipe] = useState(
+    JSON.parse(localStorage.getItem("likedRecipe"))
+  );
 
   useEffect(() => {
     if (!sessionStorage.getItem("recipeVisit")) {
@@ -64,6 +74,7 @@ export default function Recipes() {
       dispatch(setFilteredRecipe());
     }
   };
+
   const handleNonVeg = (event) => {
     dispatch(setNonVeg(event.target.checked));
     if (event.target.checked === true) {
@@ -85,6 +96,21 @@ export default function Recipes() {
     setNewRecipe(recipeObj);
   };
 
+  const handleLikedRecipe = () => {
+    const isLiked = !likedRecipeState;
+    if (isLiked) {
+      dispatch(setVeg(false));
+      dispatch(setNonVeg(false));
+    }
+    dispatch(
+      displayLikedRecipe({ likedRecipe: likedRecipe?likedRecipe:[], isLiked: isLiked })
+    );
+  };
+
+  const handleSearch = debounce((text) => {
+    setSearchString(text);
+  }, 500);
+
   return (
     <div>
       <div className="searches section">
@@ -92,7 +118,7 @@ export default function Recipes() {
           <input
             type="text"
             placeholder="Search All..."
-            onChange={(e) => setSearchString(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
           />
           <button className="btn">
             <FontAwesomeIcon icon={faSearch} />
@@ -125,6 +151,21 @@ export default function Recipes() {
             label="Non-Veg"
             labelPlacement="start"
           />
+          <FormControlLabel
+            className={`form-label ${likedRecipeState && "liked"}`}
+            control={
+              <p style={{ marginLeft: "2px" }}>
+                {!likedRecipeState ? (
+                  <FontAwesomeIcon icon={faHeart} className="heartIcon" />
+                ) : (
+                  <FontAwesomeIcon icon={solidHeart} className="heartIcon" />
+                )}
+              </p>
+            }
+            label="Liked "
+            labelPlacement="start"
+            onClick={handleLikedRecipe}
+          />
           {isadmin && (
             <Button onClick={() => setOpen(true)} className="add-btn">
               Add
@@ -134,10 +175,18 @@ export default function Recipes() {
         </FormGroup>
       </div>
       <div className="recipes-container">
-        {filteredRecipe.map((recipe, index) => (
-          <RecipeCard key={index} recipe={recipe}/>
-        ))}
+        <AnimatePresence>
+          {filteredRecipe.map((recipe, index) => (
+            <RecipeCard
+              key={recipe.title}
+              recipe={recipe}
+              likedRecipe={likedRecipe}
+              setLikedRecipe={setLikedRecipe}
+            />
+          ))}
+        </AnimatePresence>
       </div>
+
       <Dialog
         open={open}
         PaperProps={{
