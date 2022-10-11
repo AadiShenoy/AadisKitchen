@@ -2,8 +2,8 @@ import CustomImage from "./CustomImage";
 import veg from "../assets/veg.png";
 import nonveg from "../assets/nonveg.png";
 import { Link } from "react-router-dom";
-import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import moment from "moment";
 import {
   faClock,
   faHeart as solidHeart,
@@ -16,7 +16,12 @@ export default function RecipeCard({ recipe, likedRecipe, setLikedRecipe }) {
   var date = new Date(Date.now());
   var result =
     date.getMonth() > 8
-      ? date.getMonth() + 1
+      ? date.getMonth() +
+        1 +
+        "/" +
+        (date.getDate() > 9 ? date.getDate() : "0" + date.getDate()) +
+        "/" +
+        date.getFullYear()
       : "0" +
         (date.getMonth() + 1) +
         "/" +
@@ -63,7 +68,7 @@ export default function RecipeCard({ recipe, likedRecipe, setLikedRecipe }) {
     like = isLiked;
     let temp;
     if (isLiked) {
-      temp=likedRecipe?[...likedRecipe, recipe.title]:[recipe.title]
+      temp = likedRecipe ? [...likedRecipe, recipe.title] : [recipe.title];
     } else {
       temp = likedRecipe?.filter((item) => item !== recipe.title);
     }
@@ -75,8 +80,8 @@ export default function RecipeCard({ recipe, likedRecipe, setLikedRecipe }) {
       className="recipe-card"
       key={recipe.title}
       layout
-      initial={{ scale: 0.6, opacity: 0}}
-      whileInView={{ scale: 1, opacity: 1}}
+      initial={{ scale: 0.6, opacity: 0 }}
+      whileInView={{ scale: 1, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
@@ -93,9 +98,11 @@ export default function RecipeCard({ recipe, likedRecipe, setLikedRecipe }) {
       <div className="recipe-card-info">
         <div className="title-icon-div">
           <p className="recipe-title capitalise">{recipe.title}</p>
-          <motion.div className="recipe-title" onClick={handleLike} 
-          initial={{scale:1}}
-          whileTap={{scale:1.5}}
+          <motion.div
+            className="recipe-title"
+            onClick={handleLike}
+            initial={{ scale: 1 }}
+            whileTap={{ scale: 1.5 }}
           >
             {like ? (
               <FontAwesomeIcon icon={solidHeart} className="heartIcon" />

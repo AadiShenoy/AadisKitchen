@@ -182,7 +182,7 @@ export default function Settings({ adminAuthCred }) {
         }}
       >
         <DialogContent>
-          <h3>Admin Credentials</h3>
+          <h3>Admin Credentials.</h3>
           <TextField
             id="name"
             label="Admin Name"

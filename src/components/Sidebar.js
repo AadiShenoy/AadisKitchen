@@ -19,6 +19,7 @@ export default function Sidebar({ links, close }) {
       document.removeEventListener("mousedown", handler);
     };
   });
+  
   return (
     <div className="sidebar" onClick={close} ref={sideBarRef}>
       {links.map((link) => (

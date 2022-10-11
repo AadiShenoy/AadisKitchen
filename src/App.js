@@ -25,10 +25,12 @@ function App() {
       setRecipe(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
     );
   };
-  
+
   const fetchCount = async () => {
     const countData = await getDocs(countCollectionRef);
-    dispatch(setCount(countData.docs.map((doc) => ({ ...doc.data() }))[0].count));
+    dispatch(
+      setCount(countData.docs.map((doc) => ({ ...doc.data() }))[0].count)
+    );
   };
 
   const handleFetch = async () => {
@@ -58,7 +60,6 @@ function App() {
 
   return (
     <Router>
-      {/* <ScrollToTop /> */}
       <Navbar />
       <div className="container main">
         <Routes>
